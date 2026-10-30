@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('profile.title') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center g-4">
+  <div class="col-md-6">
+    <div class="card dom-card">
+      <div class="card-body p-4">
+        <h1 class="h3 dom-serif mb-3">{{ _('profile.title') }}</h1>
+        <dl class="row mb-0">
+          <dt class="col-5">{{ _('profile.username') }}</dt><dd class="col-7">{{ current_user.username }}</dd>
+          <dt class="col-5">{{ _('profile.nickname') }}</dt><dd class="col-7">{{ current_user.name }}</dd>
+          <dt class="col-5">{{ _('profile.role') }}</dt><dd class="col-7">{{ ROLE_NAMES[current_user.role] }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card dom-card mb-4">
+      <div class="card-body p-4">
+        <h5 class="dom-serif mb-3">{{ _('profile.change_name') }}</h5>
+        <form method="post" action="{{ url_for('profile.change_name') }}">
+          <div class="mb-3">
+            <label class="form-label small">{{ _('profile.nickname') }}</label>
+            <input type="text" name="display_name" class="form-control"
+                   value="{{ current_user.display_name or '' }}"
+                   placeholder="{{ current_user.username }}"
+                   maxlength="64">
+          </div>
+          <button class="btn btn-dom">{{ _('profile.save') }}</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card dom-card">
+      <div class="card-body p-4">
+        <h5 class="dom-serif mb-3">{{ _('profile.change_password') }}</h5>
+        <form method="post" action="{{ url_for('profile.change_password') }}" autocomplete="off">
+          <div class="mb-2">
+            <label class="form-label small">{{ _('profile.current_password') }}</label>
+            <input type="password" name="old_password" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label small">{{ _('profile.new_password') }}</label>
+            <input type="password" name="new_password" class="form-control" required minlength="8">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('profile.confirm_password') }}</label>
+            <input type="password" name="confirm_password" class="form-control" required minlength="8">
+          </div>
+          <button class="btn btn-dom">{{ _('profile.save') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

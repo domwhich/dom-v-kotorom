@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('nav.admin') }}{% endblock %}
+{% block content %}
+<h1 class="dom-serif mb-4">{{ _('admin.users') }}</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card dom-card">
+      <div class="card-body p-4">
+        <h5 class="dom-serif mb-3">{{ _('admin.create_user') }}</h5>
+        <form method="post" autocomplete="off">
+          <div class="mb-2">
+            <label class="form-label small">Логин</label>
+            <input name="username" class="form-control" required minlength="3">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small">Пароль (мин. 8 символов)</label>
+            <div class="input-group">
+              <input type="password" name="password" id="pwd-input"
+                     class="form-control" required minlength="8">
+              <button type="button" class="btn btn-outline-secondary"
+                      onclick="document.getElementById('pwd-input').type =
+                               document.getElementById('pwd-input').type === 'password' ? 'text' : 'password'">
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">Роль</label>
+            <select name="role" class="form-select">
+              <option value="user">Домовец</option>
+              <option value="editor">Домовец (редактор)</option>
+              <option value="admin">Администратор</option>
+            </select>
+          </div>
+          <button class="btn btn-dom">{{ _('admin.create') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card dom-card">
+      <div class="card-body p-4">
+        <h5 class="dom-serif mb-3">Пользователи</h5>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr><th>Логин</th><th>Кличка</th><th>Роль</th><th>Сброс пароля</th><th></th></tr>
+            </thead>
+            <tbody>
+            {% for u in users %}
+            <tr>
+              <td>{{ u.username }}</td>
+              <td class="small text-muted">{{ u.display_name or '—' }}</td>
+              <td>
+                <form method="post" action="{{ url_for('admin.change_role', uid=u.id) }}" class="d-flex gap-1">
+                  <select name="role" class="form-select form-select-sm"
+                          {% if u.id == current_user.id %}disabled{% endif %}>
+                    <option value="user"   {% if u.role=='user'   %}selected{% endif %}>Домовец</option>
+                    <option value="editor" {% if u.role=='editor' %}selected{% endif %}>Домовец (редактор)</option>
+                    <option value="admin"  {% if u.role=='admin'  %}selected{% endif %}>Администратор</option>
+                  </select>
+                  {% if u.id != current_user.id %}
+                    <button class="btn btn-sm btn-outline-dom">OK</button>
+                  {% endif %}
+                </form>
+              </td>
+              <td>
+                <form method="post" action="{{ url_for('admin.reset_password', uid=u.id) }}"
+                      class="d-flex gap-1">
+                  <input type="password" name="password" class="form-control form-control-sm"
+                         placeholder="Новый пароль" minlength="8" required style="max-width:130px;">
+                  <button class="btn btn-sm btn-outline-dom">↺</button>
+                </form>
+              </td>
+              <td class="text-end">
+                {% if u.id != current_user.id %}
+                <form method="post" action="{{ url_for('admin.delete_user', uid=u.id) }}"
+                      onsubmit="return confirm('Удалить пользователя {{ u.username }}?')">
+                  <button class="btn btn-sm btn-outline-danger">×</button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+user.name=domwhich
+user.email=wertyt2332@gmail.com
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# === Виртуальные окружения ===
+.venv/
+venv/
+env/
+ENV/
+
+# === Flask ===
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# === Секреты и локальные настройки ===
+.env
+.env.*
+!.env.example
+
+# === IDE / OS ===
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# === Логи ===
+*.log

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('nav.chats') }}{% endblock %}
+{% block content %}
+<h1 class="dom-serif mb-4">{{ _('nav.chats') }}</h1>
+{% if chats %}
+<div class="row g-3">
+  {% for c in chats %}
+  <div class="col-md-6 col-lg-4">
+    <a href="{{ c.url }}" target="_blank" rel="noopener"
+       class="card dom-card h-100 text-decoration-none text-reset">
+      <div class="card-body">
+        <h5 class="card-title dom-serif mb-2">{{ c.title }}</h5>
+        {% if c.description %}<p class="card-text small text-muted mb-0">{{ c.description }}</p>{% endif %}
+        <span class="small text-muted">Telegram →</span>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">{{ _('chats.empty') }}</p>
+{% endif %}
+{% endblock %}

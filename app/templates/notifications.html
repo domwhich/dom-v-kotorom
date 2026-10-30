@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('nav.notifications') }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="dom-serif mb-0">{{ _('nav.notifications') }}</h1>
+  {% if notifications %}
+  <form method="post" action="{{ url_for('notifications.mark_all') }}">
+    <button class="btn btn-outline-dom btn-sm">{{ _('notifications.mark_all') }}</button>
+  </form>
+  {% endif %}
+</div>
+
+{% if notifications %}
+<ul class="list-group">
+  {% for n in notifications %}
+  <li class="list-group-item d-flex justify-content-between align-items-start {% if not n.is_read %}bg-light{% endif %}">
+    <div>
+      {% if n.type == 'event_created' %}
+        📅 Новое событие: <strong>{{ n.payload.title }}</strong>
+      {% elif n.type == 'role_assigned' %}
+        🎭 Вам назначена роль: <strong>{{ ROLE_NAMES[n.payload.role] }}</strong>
+      {% else %}
+        {{ n.type }}
+      {% endif %}
+      <div class="small text-muted">{{ n.created_at.strftime('%d.%m.%Y %H:%M') }}</div>
+    </div>
+    {% if not n.is_read %}
+    <form method="post" action="{{ url_for('notifications.mark_one', nid=n.id) }}">
+      <button class="btn btn-sm btn-link">{{ _('notifications.mark_read') }}</button>
+    </form>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="text-muted">{{ _('notifications.empty') }}</p>
+{% endif %}
+{% endblock %}

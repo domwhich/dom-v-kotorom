@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('login.title') }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card dom-card">
+      <div class="card-body p-4">
+        <h1 class="h3 dom-serif mb-3">{{ _('login.title') }}</h1>
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label">{{ _('login.username') }}</label>
+            <input type="text" name="username" class="form-control" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('login.password') }}</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-dom w-100">{{ _('login.submit') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h1 class="dom-serif mb-4">
+      {{ _('events.edit') if event else _('events.create') }}
+    </h1>
+    <form method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Название</label>
+        <input type="text" name="title" class="form-control" required
+               value="{{ event.title if event else '' }}">
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Дата</label>
+          <input type="date" name="date" class="form-control" required
+                 value="{{ event.date.strftime('%Y-%m-%d') if event else '' }}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Время</label>
+          <input type="time" name="time" class="form-control" required
+                 value="{{ event.date.strftime('%H:%M') if event else '' }}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Описание</label>
+        <textarea name="description" class="form-control" rows="5" required>{{ event.description if event else '' }}</textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Обложка (до 5 МБ)</label>
+        <input type="file" name="cover" class="form-control" accept="image/*">
+        {% if event and event.cover_url %}
+          <img src="{{ event.cover_url }}" class="mt-2 dom-cover-sm" alt="">
+        {% endif %}
+      </div>
+      <button class="btn btn-dom">{{ _('events.save') }}</button>
+      <a href="{{ url_for('events.list_events') }}" class="btn btn-link">{{ _('events.cancel') }}</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
